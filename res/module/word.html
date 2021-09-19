@@ -1,0 +1,93 @@
+
+<!--
+
+	ATTENTION: 此文件为子模版页，需要嵌入 index.html
+	
+	用途：显示一个单词的 Ted Englishpia 排版
+	
+	替换表：
+	"{ WORD }"				单词英文
+	"{ TIME }"				记录时间
+	"{ PRONUNCIATION }"		单词音标
+	"{ MEANING }"			单词意思
+	"{ SENTENCES }"			单词例句
+	"{ DIV_ID }"			可展开 div 的自定义 id
+	"{ IFRAME_SRC }"		单词详细释义的网址
+	"{ GOOGLE_URL }"		此单词的谷歌翻译网址
+	"{ BAIDU_URL }"			此单词的百度翻译网址
+	"{ MORE_SENTENCES_URL }"	此单词的更多例句网址
+	
+-->
+
+<!-- 单词 -->
+
+<font color="red" > {WORD} </font>
+<div class="return"></div>
+<font color="grey" > {TIME} </font>
+<div class="return"></div>
+{PRONUNCIATION}
+<div class="return"></div>
+{MEANING}
+<div class="return"></div>
+{SENTENCES}
+<div class="return"></div>
+
+<!-- 单词详细信息 -->
+
+<button style="color:blue;" onclick="show_{DIV_ID}()">显示原查询</button>
+<a target="_blank" href="{GOOGLE_URL}">谷歌翻译</a>
+<a target="_blank" href="{BAIDU_URL}">百度翻译</a>
+<a target="_blank" href="{MORE_SENTENCES_URL}">更多例句</a>
+
+<script>
+
+	// 动态显示
+	var show_state_{DIV_ID} = false;
+	function show_{DIV_ID}()
+	{
+		var obj = document.getElementById("{DIV_ID}");
+		if(show_state_{DIV_ID})
+		{
+			obj.style = "display:none";
+			show_state_{DIV_ID} = false;
+		}
+		else
+		{
+			obj.style = "";
+			show_state_{DIV_ID} = true;
+		}
+	}
+
+</script>
+
+<div id="{DIV_ID}" style="display:none">
+
+	<div style="
+		resize:both;
+		overflow:auto;
+		width : 500px;
+		height : 300px;
+		border : 1px solid;
+	">
+
+		<iframe
+			iframeborder=0 
+			src="{IFRAME_SRC}"
+			style="
+				width:calc(100% - 10px);
+				height:calc(100% - 10px);
+		">
+			iframe 加载失败
+		</iframe>
+
+	</div>
+	
+</div>
+
+<div class="return"></div>
+&nbsp;
+<div class="return"></div>
+
+<!-- 单词详细信息 END -->
+
+<!-- 单词 END -->
