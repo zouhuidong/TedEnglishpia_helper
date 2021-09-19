@@ -1,5 +1,9 @@
 # TedEnglishpia_helper
 
+运行效果
+---
+![效果图](https://github.com/zouhuidong/TedEnglishpia_helper/blob/main/screenshot/1.png)
+
 编译环境
 ---
 VisualStudio 2019
