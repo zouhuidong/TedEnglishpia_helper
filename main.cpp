@@ -32,7 +32,7 @@
 //		都要回车，若输入 ‘/’ 字符后再回车即可开始查询。
 // 
 // 作者：huidong <huidong_mail@163.com>
-// 版本：Ver 0.1(alpha)
+// 版本：Ver 0.2
 // 最后修改： 2021.9.19
 //
 //
@@ -50,6 +50,17 @@
 #pragma comment(lib, "wininet.lib")
 #pragma comment(lib, "comsuppw.lib")
 using namespace std;
+
+////// 全局变量
+
+// 版本信息
+char g_strInfo[] = "Ver 0.2 | 2021.9.19";
+
+// 基准日期
+int m_month = -1;
+int m_day	= -1;
+int m_hour	= -1;
+int m_min	= -1;
 
 ////// 类型定义
 
@@ -274,6 +285,30 @@ string GetModuleWordHTML()
 	return GetFile("./res/module/word.html");
 }
 
+// 显示帮助页面
+void PrintHelpPage()
+{
+	printf(
+		"\n\n"
+		"--------------------------------------\n"
+		"TedEnglishpia_helper 指令说明\n"
+		"\n"
+		"在 '/' 后可以附加如下指令：\n"
+		"\n"
+		"help            显示帮助页面\n"
+		"\n"
+		"ab-cd (ef:gh)   设置基准时间，也就是显示在 Englishpia 上的抄录日期\n"
+		"                ab-cd 是基准月份和天数，\n"
+		"                ef:gh 是可选添加的，用于指定基准小时和分钟\n"
+		"                若数字是个位数，可以自由选择是否补 0 凑两位数。\n"
+		"                示例：\n"
+		"                /9-20\n"
+		"                /12-1 11:3\n"
+		"                /01-07 07:09\n"
+		"\n"
+	);
+}
+
 // 获取用户输入的所有单词
 vector<string> GetInputWords()
 {
@@ -284,13 +319,59 @@ vector<string> GetInputWords()
 		gets_s(buf, 256);
 
 		// 结束
-		if ((string)buf == "/")
+		if (buf[0] == '/')
 		{
-			break;
+			// 含参数
+			if (strlen(buf) > 1)
+			{
+				string strCommand = buf + 1;
+				if (strCommand == "help")
+				{
+					PrintHelpPage();
+				}
+				
+				// 设置基准日期
+				else
+				{
+					int offset = 0;
+
+					string strMonth, strDay, strHour, strMinute;
+
+					for (; offset < (int)strCommand.size() && strCommand[offset] != '-'; strMonth += strCommand[offset], offset++);
+					for (offset++; offset < (int)strCommand.size() && strCommand[offset] != ' '; strDay += strCommand[offset], offset++);
+
+					m_month = atoi(strMonth.c_str());
+					m_day = atoi(strDay.c_str());
+
+					printf("\n已设置基准时间为：%02d 月 %02d 日 ", m_month, m_day);
+
+					if (offset < (int)strCommand.size())
+					{
+						for (offset++; offset < (int)strCommand.size() && strCommand[offset] != ':'; strHour += strCommand[offset], offset++);
+						for (offset++; offset < (int)strCommand.size(); strMinute += strCommand[offset], offset++);
+
+						m_hour = atoi(strHour.c_str());
+						m_min = atoi(strMinute.c_str());
+
+						printf("%02d 点 %02d 分", m_hour, m_min);
+					}
+
+					printf("\n");
+				}
+			}
+
+			// 若没有输入单词，就不退出循环
+			if (vecStrings.size() > 0)
+			{
+				break;
+			}
 		}
 		else
 		{
-			vecStrings.push_back(buf);
+			if (strlen(buf) > 0)
+			{
+				vecStrings.push_back(buf);
+			}
 		}
 	}
 
@@ -501,15 +582,6 @@ EWORD SearchWord(string strWord)
 	{
 		OutError("查找 " + strWord + " 的例句失败", false);
 	}
-	
-
-	/**
-	*
-	* ////////////////////////////
-	* //////////////////////////// 正在分析 http://dict.cn/code 的例句系统。
-	* 、、、、、、、、、、、、、//// http://www.jukuu.com/ 同时要显示句库的链接，方便找更多例句
-	*
-	**/
 
 	return eword;
 }
@@ -533,8 +605,14 @@ string GetWordHTML(EWORD eword, string strModuleHTML)
 	SYSTEMTIME sys;
 	GetLocalTime(&sys);
 
+	// 基准时间设置
+	sys.wMonth	= m_month	> 0 ? sys.wMonth	: m_month;
+	sys.wDay	= m_day		> 0 ? sys.wDay		: m_day;
+	sys.wHour	= m_hour	>= 0 ? sys.wHour	: m_hour;
+	sys.wMinute	= m_min		>= 0 ? sys.wMinute	: m_min;
+
 	// 根据单词数量动态计算抄录此单词的时间
-	sys.wMinute += count * spent_per_word + (rand() % 4 - 2) * rand() % (deviation_per_word + 1);
+	sys.wMinute += count * spent_per_word + (rand() % 3 - 1) * rand() % (deviation_per_word + 1);
 
 	// 时间进位
 	sys.wHour += sys.wMinute / 60;
@@ -545,6 +623,7 @@ string GetWordHTML(EWORD eword, string strModuleHTML)
 	char bufTime[128] = { 0 };
 	sprintf_s(bufTime, 128, "%02d.%02d %02d:%02d", sys.wMonth, sys.wDay, sys.wHour, sys.wMinute);
 
+	// 将所有释义加入一个字符串中
 	string strMeaning;
 	for (int i = 0; i < (int)eword.meaning.size(); i++)
 	{
@@ -553,6 +632,7 @@ string GetWordHTML(EWORD eword, string strModuleHTML)
 		strMeaning += buf + (string)". " + eword.meaning[i] + "&nbsp;&nbsp;";
 	}
 
+	// 将所有例句加入一个字符串中
 	string strSentences;
 	for (int i = 0; i < (int)eword.sentences.size(); i++)
 	{
@@ -569,7 +649,10 @@ string GetWordHTML(EWORD eword, string strModuleHTML)
 		int pos = low_en.find(low_word);
 		if (pos >= 0)
 		{
-			en.replace(pos, eword.word.length(), "<font color=red>" + eword.word + "</font>");
+			// 找到关键字之后仍使用原句中的字符串，因为用户输入的字符串大小写可能不正确
+			char dest[256] = { 0 };
+			strncpy_s(dest, en.c_str() + pos, eword.word.size());
+			en.replace(pos, eword.word.length(), "<font color=red>" + (string)dest + "</font>");
 		}
 		
 		strSentences += buf + (string)". " + en + "<div class=\"return\"></div>&nbsp;&nbsp;" + eword.sentences[i].zh;
@@ -579,6 +662,7 @@ string GetWordHTML(EWORD eword, string strModuleHTML)
 		}
 	}
 
+	// 填写参数
 	replace_all(strHTML, "{WORD}", eword.word);
 	replace_all(strHTML, "{TIME}", bufTime);
 	replace_all(strHTML, "{PRONUNCIATION}", "/" + eword.pronunciation + "/");
@@ -622,7 +706,12 @@ string BuildEnglishPia(vector<string> vecStrings)
 	char path[128] = { 0 };
 	sprintf_s(path, 128, "%04d.%02d.%02d %02d:%02d", sys.wYear, sys.wMonth, sys.wDay, sys.wHour, sys.wMinute);
 
+	char chNum[6] = { 0 };
+	_itoa_s(words.size(), chNum, 10);
+
+	// 填写参数
 	replace_all(strModuleIndex, "{TIME}", path);
+	replace_all(strModuleIndex, "{NUM}", chNum);
 	replace_all(strModuleIndex, "{CONTENT}", strWordsHTML);
 
 	return strModuleIndex;
@@ -654,9 +743,11 @@ int main()
 	srand((UINT)time(0));
 
 	printf(
-		"TedEnglishpia_helper by huidong 2021.9.19\n\n"
+		"TedEnglishpia_helper by huidong %s\n\n"
 		"根据单词自动生成 Ted 的 Englishpia，提高作业效率\n\n"
-		"Enter your words here and return one for each word, ending with '/' :\n\n");
+		"输入待查询单词，每个单词结束后回车，最后输入 '/' 并回车开始查询。\n"
+		"'/' 后可以带参数，请输入 '/help' 查看更多。\n\n"
+		"在此输入待查询单词：\n\n", g_strInfo);
 
 	while (true)
 	{
