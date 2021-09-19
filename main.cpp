@@ -606,10 +606,10 @@ string GetWordHTML(EWORD eword, string strModuleHTML)
 	GetLocalTime(&sys);
 
 	// 基准时间设置
-	sys.wMonth	= m_month	> 0 ? sys.wMonth	: m_month;
-	sys.wDay	= m_day		> 0 ? sys.wDay		: m_day;
-	sys.wHour	= m_hour	>= 0 ? sys.wHour	: m_hour;
-	sys.wMinute	= m_min		>= 0 ? sys.wMinute	: m_min;
+	sys.wMonth	= m_month	<= 0 ? sys.wMonth	: m_month;
+	sys.wDay	= m_day		<= 0 ? sys.wDay		: m_day;
+	sys.wHour	= m_hour	< 0 ? sys.wHour		: m_hour;
+	sys.wMinute	= m_min		< 0 ? sys.wMinute	: m_min;
 
 	// 根据单词数量动态计算抄录此单词的时间
 	sys.wMinute += count * spent_per_word + (rand() % 3 - 1) * rand() % (deviation_per_word + 1);
