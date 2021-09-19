@@ -32,7 +32,7 @@
 //		都要回车，若输入 ‘/’ 字符后再回车即可开始查询。
 // 
 // 作者：huidong <huidong_mail@163.com>
-// 版本：Ver 0.2
+// 版本：Ver 0.3
 // 最后修改： 2021.9.19
 //
 //
@@ -54,7 +54,7 @@ using namespace std;
 ////// 全局变量
 
 // 版本信息
-char g_strInfo[] = "Ver 0.2 | 2021.9.19";
+char g_strInfo[] = "Ver 0.3 | 2021.9.19";
 
 // 基准日期
 int m_month = -1;
@@ -337,7 +337,10 @@ vector<string> GetInputWords()
 
 					string strMonth, strDay, strHour, strMinute;
 
-					for (; offset < (int)strCommand.size() && strCommand[offset] != '-'; strMonth += strCommand[offset], offset++);
+					// 读取日期
+
+					// "月份-天数" 格式或 "月份.天数" 格式
+					for (; offset < (int)strCommand.size() && strCommand[offset] != '-' && strCommand[offset] != '.'; strMonth += strCommand[offset], offset++);
 					for (offset++; offset < (int)strCommand.size() && strCommand[offset] != ' '; strDay += strCommand[offset], offset++);
 
 					m_month = atoi(strMonth.c_str());
@@ -345,8 +348,10 @@ vector<string> GetInputWords()
 
 					printf("\n已设置基准时间为：%02d 月 %02d 日 ", m_month, m_day);
 
+					// 读取时间
 					if (offset < (int)strCommand.size())
 					{
+						// "小时:分钟" 格式
 						for (offset++; offset < (int)strCommand.size() && strCommand[offset] != ':'; strHour += strCommand[offset], offset++);
 						for (offset++; offset < (int)strCommand.size(); strMinute += strCommand[offset], offset++);
 
@@ -354,6 +359,13 @@ vector<string> GetInputWords()
 						m_min = atoi(strMinute.c_str());
 
 						printf("%02d 点 %02d 分", m_hour, m_min);
+					}
+
+					// 设置日期却未设置时间，则不使用基准时间
+					else
+					{
+						m_hour = -1;
+						m_min = -1;
 					}
 
 					printf("\n");
@@ -453,7 +465,13 @@ bool FindSentences(EWORD* eword, string strHTML)
 	int end_sentences = strHTML.find("<div class=\"dict-chart\" id=\"dict-chart-examples\"");
 	if (end_sentences < 0)
 	{
-		return false;
+		// 有可能此单词不存在 [词性常用度分布图]，所以查找另一个结束位置
+		end_sentences = strHTML.find("<h3", offset);
+
+		if (end_sentences < 0)
+		{
+			return false;
+		}
 	}
 
 	// 各个词性的例句（可能含多个例句）的起始和终止位置
@@ -594,10 +612,10 @@ string GetWordHTML(EWORD eword, string strModuleHTML)
 	static int count = 0;
 
 	// 记录每个单词所需时间（分钟）
-	int spent_per_word = 5;
+	int spent_per_word = 6;
 
 	// 记录单词所需时间的随机偏差大小（分钟）
-	int deviation_per_word = 3;
+	int deviation_per_word = 2;
 
 	// HTML 内容
 	string strHTML = strModuleHTML;
