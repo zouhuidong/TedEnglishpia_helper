@@ -1,0 +1,154 @@
+<!--
+
+	ATTENTION: 此文件为模版页
+	
+	用途：显示整个 Ted Englishpia
+	
+	替换表：
+	"{ TIME }"		此页面创建时间
+	"{ NUM }"		单词数量
+	"{ CONTENT }"	Englishpia 内容
+	
+-->
+
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<style>
+		
+			/* 每个换行的样式 */
+			.return {
+				width: 100%;
+				height: 1px;
+				background-color: green;
+			}
+			
+			.content {
+				border: 2px solid green;
+				line-height: 1.8;
+				font-family: "Lucida Console", "Courier New";
+				font-size: 18;
+			}
+		
+		</style>
+	</head>
+
+	<body style="padding: 0 60px 20px 60px;background-color:#fbfbfb">
+	
+		<center>
+			<h1> Ted Englishpia </h1>
+			<p> created by huidong [TedEnglishpia_helper].</p>
+			<p> create time: 2021.09.19 21:40 </p>
+			<small> 英语单词的详细信息来自 dict.cn </small>
+		</center>
+		<b>共 1 词</b>
+		<div class="content">
+		
+			<div class="return"></div>
+			&nbsp;
+			<div class="return"></div>
+			
+			
+<!--
+
+	ATTENTION: 此文件为子模版页，需要嵌入 index.html
+	
+	用途：显示一个单词的 Ted Englishpia 排版
+	
+	替换表：
+	"{ WORD }"				单词英文
+	"{ TIME }"				记录时间
+	"{ PRONUNCIATION }"		单词音标
+	"{ MEANING }"			单词意思
+	"{ SENTENCES }"			单词例句
+	"{ DIV_ID }"			可展开 div 的自定义 id
+	"{ IFRAME_SRC }"		单词详细释义的网址
+	"{ GOOGLE_URL }"		此单词的谷歌翻译网址
+	"{ BAIDU_URL }"			此单词的百度翻译网址
+	"{ MORE_SENTENCES_URL }"	此单词的更多例句网址
+	
+-->
+
+<!-- 单词 -->
+
+<font color="red" > muscles </font>
+<div class="return"></div>
+<font color="grey" > 09.19 21:45 </font>
+<div class="return"></div>
+/'mʌslz/
+<div class="return"></div>
+1. <span>n.</span><strong>肌肉</strong>&nbsp;&nbsp;2. <strong>名词muscle的复数形式.</strong>&nbsp;&nbsp;
+<div class="return"></div>
+1. He developed the <font color=red>muscles</font> in the legs by running.<div class="return"></div>&nbsp;&nbsp;他藉着跑步使腿部的肌肉发达了。<div class="return"></div>2. These exercises will tone up your <font color=red>muscles</font>.<div class="return"></div>&nbsp;&nbsp;这些运动方式会强健你的肌肉。
+<div class="return"></div>
+
+<!-- 单词详细信息 -->
+
+<button style="color:blue;" onclick="show_div_muscles()">显示原查询</button>
+<a target="_blank" href="https://translate.google.cn/?sl=en&tl=zh-CN&text=muscles">谷歌翻译</a>
+<a target="_blank" href="https://fanyi.baidu.com/#en/zh/muscles">百度翻译</a>
+<a target="_blank" href="http://www.jukuu.com/search.php?q=muscles">更多例句</a>
+
+<script>
+
+	// 动态显示
+	var show_state_div_muscles = false;
+	function show_div_muscles()
+	{
+		var obj = document.getElementById("div_muscles");
+		if(show_state_div_muscles)
+		{
+			obj.style = "display:none";
+			show_state_div_muscles = false;
+		}
+		else
+		{
+			obj.style = "";
+			show_state_div_muscles = true;
+		}
+	}
+
+</script>
+
+<div id="div_muscles" style="display:none">
+
+	<div style="
+		resize:both;
+		overflow:auto;
+		width : 500px;
+		height : 300px;
+		border : 1px solid;
+	">
+
+		<iframe
+			iframeborder=0 
+			src="http://dict.cn/muscles"
+			style="
+				width:calc(100% - 10px);
+				height:calc(100% - 10px);
+		">
+			iframe 加载失败
+		</iframe>
+
+	</div>
+	
+</div>
+
+<div class="return"></div>
+&nbsp;
+<div class="return"></div>
+
+<!-- 单词详细信息 END -->
+
+<!-- 单词 END -->
+
+
+			&nbsp;
+			<div class="return"></div>
+		
+		</div>
+	
+	</body>
+
+</html>
