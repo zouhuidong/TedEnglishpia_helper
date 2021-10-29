@@ -1,5 +1,13 @@
 # TedEnglishpia_helper
 
+关于 "Englishpia" !!
+---
+创建项目的时候错把 "Englishpedia" 写成了 "Englishpia"，于是一错再错……
+
+但是影响不大，我也懒得改了，大家都知道正确拼法就行了。
+
+"Englishpia" 也可以当做是此工具的特色名称吧~（手动滑稽）
+
 运行效果
 ---
 ![效果图](https://github.com/zouhuidong/TedEnglishpia_helper/blob/main/screenshot/1.png)
