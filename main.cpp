@@ -32,8 +32,8 @@
 //		都要回车，若输入 ‘/’ 字符后再回车即可开始查询。
 // 
 // 作者：huidong <huidong_mail@163.com>
-// 版本：Ver 0.3
-// 最后修改： 2021.9.19
+// 版本：Ver 0.4
+// 最后修改： 2021.10.29
 //
 //
 
@@ -54,7 +54,7 @@ using namespace std;
 ////// 全局变量
 
 // 版本信息
-char g_strInfo[] = "Ver 0.3 | 2021.9.19";
+char g_strInfo[] = "Ver 0.4 | 2021.10.29";
 
 // 基准日期
 int m_month = -1;
@@ -290,12 +290,13 @@ void PrintHelpPage()
 {
 	printf(
 		"\n\n"
-		"--------------------------------------\n"
+		"-------------------------------------------------------------------------\n"
 		"TedEnglishpia_helper 指令说明\n"
 		"\n"
 		"在 '/' 后可以附加如下指令：\n"
 		"\n"
 		"help            显示帮助页面\n"
+		"file            选择单词列表文件\n"
 		"\n"
 		"ab-cd (ef:gh)   设置基准时间，也就是显示在 Englishpia 上的抄录日期\n"
 		"                ab-cd 是基准月份和天数，\n"
@@ -306,7 +307,78 @@ void PrintHelpPage()
 		"                /12-1 11:3\n"
 		"                /01-07 07:09\n"
 		"\n"
+		"直接在单词后面加 '/' 可以直接开始查询\n"
+		"-------------------------------------------------------------------------\n"
+		"\n"
 	);
+}
+
+// 选择文件
+// isSave标志着是否为保存模式
+const WCHAR* SelectFile(bool isSave = false)
+{
+	OPENFILENAME ofn;
+	static WCHAR szFile[256];
+	static WCHAR szFileTitle[256];
+	memset(&ofn, 0, sizeof(ofn));
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = GetConsoleWindow();
+	ofn.lpstrFilter = L"要查询的单词文件 (*.txt)\0*.txt;\0All File(*.*)\0*.*;\0";
+	ofn.lpstrDefExt = L"txt";
+	ofn.nFilterIndex = 1;
+	ofn.lpstrFile = szFile;
+	ofn.nMaxFile = sizeof(szFile);
+	ofn.lpstrFileTitle = szFileTitle;
+	ofn.nMaxFileTitle = sizeof(szFileTitle);
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_EXPLORER;
+
+	wchar_t oldpath[1024] = { 0 };
+	_wgetcwd(oldpath, 1024);
+
+	if (isSave)
+	{
+		if (GetSaveFileName(&ofn))
+		{
+			SetCurrentDirectory(oldpath);
+			return szFile;
+		}
+	}
+	else
+	{
+		if (GetOpenFileName(&ofn))
+		{
+			SetCurrentDirectory(oldpath);
+			return szFile;
+		}
+	}
+
+	return L"";
+}
+
+// 从文件中获取要查询的单词
+vector<string> GetWordsInFile(string path)
+{
+	vector<string> vecWords;
+	FILE* fp;
+
+	if (fopen_s(&fp, path.c_str(), "r") != 0)
+	{
+		OutError("打开文件失败", false);
+		return vecWords;
+	}
+
+	const int size = 1024;
+	char buf[size] = { 0 };
+	while (fscanf_s(fp, "%s\n", buf, size) != -1)
+	{
+		vecWords.push_back(buf);
+		memset(buf, 0, size);
+	}
+
+	fclose(fp);
+	fp = NULL;
+
+	return vecWords;
 }
 
 // 获取用户输入的所有单词
@@ -325,11 +397,21 @@ vector<string> GetInputWords()
 			if (strlen(buf) > 1)
 			{
 				string strCommand = buf + 1;
+
 				if (strCommand == "help")
 				{
 					PrintHelpPage();
 				}
 				
+				else if (strCommand == "file")
+				{
+					vecStrings = GetWordsInFile(wtos(SelectFile()));
+					if (vecStrings.size() > 0)
+					{
+						return vecStrings;
+					}
+				}
+
 				// 设置基准日期
 				else
 				{
@@ -378,11 +460,23 @@ vector<string> GetInputWords()
 				break;
 			}
 		}
+
 		else
 		{
 			if (strlen(buf) > 0)
 			{
-				vecStrings.push_back(buf);
+				// 直接结束
+				if (buf[strlen(buf) - 1] == '/')
+				{
+					buf[strlen(buf) - 1] = '\0';
+					vecStrings.push_back(buf);
+					break;
+				}
+				// 正常输入
+				else
+				{
+					vecStrings.push_back(buf);
+				}
 			}
 		}
 	}
@@ -605,21 +699,30 @@ EWORD SearchWord(string strWord)
 }
 
 // 获取一个单词以 Ted Englishpia 格式排版的 HTML 内容
-// module 模版 HTML 内容
-string GetWordHTML(EWORD eword, string strModuleHTML)
+// eword	单词信息
+// strModuleHTML	模版 HTML 页面内容
+// count	当前单词在该词组中的索引
+string GetWordHTML(EWORD eword, string strModuleHTML, int count)
 {
-	// 统计单词数量，以动态计算单词登记时间
-	static int count = 0;
+	// 该组词组的耗时累计（分钟）
+	static int nTimeCost = 0;
 
 	// 记录每个单词所需时间（分钟）
-	int spent_per_word = 6;
+	int spent_per_word = 4;
 
 	// 记录单词所需时间的随机偏差大小（分钟）
-	int deviation_per_word = 2;
+	int deviation_per_word = 1;
 
 	// HTML 内容
 	string strHTML = strModuleHTML;
 
+	// 如果是新的词组，则重新开始计算耗时累计
+	if (count == 0)
+	{
+		nTimeCost = 0;
+	}
+
+	// time
 	SYSTEMTIME sys;
 	GetLocalTime(&sys);
 
@@ -629,8 +732,13 @@ string GetWordHTML(EWORD eword, string strModuleHTML)
 	sys.wHour	= m_hour	< 0 ? sys.wHour		: m_hour;
 	sys.wMinute	= m_min		< 0 ? sys.wMinute	: m_min;
 
-	// 根据单词数量动态计算抄录此单词的时间
-	sys.wMinute += count * spent_per_word + (rand() % 3 - 1) * rand() % (deviation_per_word + 1);
+	// 计算抄录此单词的时间
+	int spend = spent_per_word + 
+				/* offset */
+				((rand() % 3 - 1) * rand() % (deviation_per_word + 1));
+
+	sys.wMinute += nTimeCost;
+	nTimeCost += spend;			// 时间累计
 
 	// 时间进位
 	sys.wHour += sys.wMinute / 60;
@@ -716,7 +824,7 @@ string BuildEnglishPia(vector<string> vecStrings)
 	string strWordsHTML;
 	for (int i = 0; i < (int)words.size(); i++)
 	{
-		strWordsHTML += GetWordHTML(words[i], strModuleWord);
+		strWordsHTML += GetWordHTML(words[i], strModuleWord, i);
 	}
 	
 	SYSTEMTIME sys;
