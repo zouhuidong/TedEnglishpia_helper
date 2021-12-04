@@ -1,6 +1,9 @@
 # TedEnglishpia_helper
+简介
+---
+自动生成符合高中英语老师（Ted）的个人英语词典作业格式的英语单词文档，高效完成查词、排版工作，辅助英语学习。
 
-关于 "Englishpia" !!
+关于 "Englishpia" 
 ---
 创建项目的时候错把 "Englishpedia" 写成了 "Englishpia"，于是一错再错……
 
