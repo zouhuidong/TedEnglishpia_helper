@@ -102,6 +102,9 @@ P.S.英语单词的详细信息来自 dict.cn
 
 *把你要查询的单词输入程序，将会生成出一个网页文档，然后把文档内容无格式复制到 Word 中分两栏打印即可。*
 
+复制到 Word 文档中（图）：
+![Word 文档示意图](https://github.com/zouhuidong/TedEnglishpia_helper/blob/main/screenshot/3.png)
+
 更新日志
 ---
 
