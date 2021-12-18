@@ -19,4 +19,24 @@
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="web.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="string_func.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="cmd.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="file.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="pedia.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
