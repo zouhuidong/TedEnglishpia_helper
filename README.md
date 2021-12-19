@@ -65,6 +65,9 @@ P.S.英语单词的详细信息来自 dict.cn
 打印建议
 ---
 
+打印效果图：
+![打印效果图](https://github.com/zouhuidong/TedEnglishpia_helper/blob/main/screenshot/4.jpg)
+
 直接将此工具生成的单词文档打印出来，可以使你做 pedia 的效率提升到最高。但是如果要打印，还需要注意一些事项。
 
 以下是使用此工具打印 TedEnglishpedia 的一个完整流程：
