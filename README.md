@@ -44,12 +44,15 @@ P.S.英语单词的详细信息来自 dict.cn
 
 ## 运行效果
 
+生成的 pedia 文档：
+
 ![效果图](https://github.com/zouhuidong/TedEnglishpia_helper/blob/main/screenshot/5.png)
+
+控制台窗口：
 
 ![效果图](https://github.com/zouhuidong/TedEnglishpia_helper/blob/main/screenshot/6.png)
 
 ## 编译环境
-
 
 VisualStudio 2022
 
