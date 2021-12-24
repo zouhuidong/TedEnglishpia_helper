@@ -33,56 +33,97 @@ string GetCSSFileName()
 	}
 }
 
+// 根据单词构建 HTML 格式的目录
+// 也就是生成在 pedia 最前面的单词列表
+string GetDirectory(vector<string> vecStrings)
+{
+	string strDirectory = "<span class=\"blue\">[ Word List ]</span>\n" DIV_RETURN "\n";
+	for (int i = 0; i < (int)vecStrings.size(); i++)
+	{
+		char buf[12] = { 0 };
+		_itoa_s(i + 1, buf, 10);
+		strDirectory += "[" + (string)buf + "] " + vecStrings[i];
+		strDirectory += "\n" DIV_RETURN "\n";
+	}
+	strDirectory += "&nbsp;\n" DIV_RETURN "\n";
+
+	return strDirectory;
+}
+
+// 传入单词列表，获取各个单词的详细信息
+vector<EWORD> GetWordsInfo(vector<string> vecStrings)
+{
+	vector<EWORD> words;
+	for (int i = 0; i < (int)vecStrings.size(); i++)
+	{
+		if (vecStrings[i].size() > 0)
+		{
+			words.push_back(SearchWord(vecStrings[i]));
+		}
+	}
+	return words;
+}
+
 // 获取一个单词以 Ted Englishpia 格式排版的 HTML 内容
 // eword	单词信息
 // strModuleHTML	模版 HTML 页面内容
 // count	当前单词在该词组中的索引
 string GetWordHTML(EWORD eword, string strModuleHTML, int count)
 {
-	// 该组词组的耗时累计（分钟）
-	static int nTimeCost = 0;
+	static int nTimeCost = 0;	// 该组词组的耗时累计（分钟）
+	int spent_per_word = 4;		// 记录每个单词所需时间（分钟）
+	int deviation_per_word = 1;	// 记录单词所需时间的随机偏差大小（分钟）
 
-	// 记录每个单词所需时间（分钟）
-	int spent_per_word = 4;
+	// 抄录时间计算
+	char bufTime[128] = { 0 };
+	{
+		// 如果是新的词组，则重新开始计算耗时累计
+		if (count == 0)
+		{
+			nTimeCost = 0;
+		}
 
-	// 记录单词所需时间的随机偏差大小（分钟）
-	int deviation_per_word = 1;
+		// 基准时间设置
+		SYSTEMTIME sys;
+		GetLocalTime(&sys);
+		sys.wMonth = g_month <= 0 ? sys.wMonth : g_month;
+		sys.wDay = g_day <= 0 ? sys.wDay : g_day;
+		sys.wHour = g_hour < 0 ? sys.wHour : g_hour;
+		sys.wMinute = g_min < 0 ? sys.wMinute : g_min;
 
+		// 计算抄录此单词的时间
+		int spend = spent_per_word +
+			/* offset */
+			((rand() % 3 - 1) * rand() % (deviation_per_word + 1));
+
+		// 时间累计
+		sys.wMinute += nTimeCost;
+		nTimeCost += spend;
+
+		// 时间进位
+		sys.wHour += sys.wMinute / 60;
+		sys.wDay += sys.wHour / 24;
+		sys.wMinute %= 60;
+		sys.wHour %= 24;
+
+		// 抄录时间转字符串
+		sprintf_s(bufTime, 128, "%02d.%02d %02d:%02d",
+			sys.wMonth, sys.wDay, sys.wHour, sys.wMinute);
+	}
+	
 	// HTML 内容
 	string strHTML = strModuleHTML;
 
-	// 如果是新的词组，则重新开始计算耗时累计
-	if (count == 0)
+	// 单词
+	string strWord = eword.word;
+
+	// 若选择生成目录，则将在每个单词前加上序号
+	if (g_bDirectoryMode)
 	{
-		nTimeCost = 0;
+		char chCount[6] = { 0 };
+		_itoa_s(count + 1, chCount, 10);
+		strWord = "<span class=\"black\">[" + (string)chCount + "]</span> " + strWord;
 	}
-
-	// time
-	SYSTEMTIME sys;
-	GetLocalTime(&sys);
-
-	// 基准时间设置
-	sys.wMonth = g_month <= 0 ? sys.wMonth : g_month;
-	sys.wDay = g_day <= 0 ? sys.wDay : g_day;
-	sys.wHour = g_hour < 0 ? sys.wHour : g_hour;
-	sys.wMinute = g_min < 0 ? sys.wMinute : g_min;
-
-	// 计算抄录此单词的时间
-	int spend = spent_per_word +
-		/* offset */
-		((rand() % 3 - 1) * rand() % (deviation_per_word + 1));
-
-	sys.wMinute += nTimeCost;
-	nTimeCost += spend;			// 时间累计
-
-	// 时间进位
-	sys.wHour += sys.wMinute / 60;
-	sys.wDay += sys.wHour / 24;
-	sys.wMinute %= 60;
-	sys.wHour %= 24;
-
-	char bufTime[128] = { 0 };
-	sprintf_s(bufTime, 128, "%02d.%02d %02d:%02d", sys.wMonth, sys.wDay, sys.wHour, sys.wMinute);
 
 	// 将所有释义加入一个字符串中
 	string strMeaning;
@@ -124,7 +165,7 @@ string GetWordHTML(EWORD eword, string strModuleHTML, int count)
 	}
 
 	// 填写参数
-	replace_all(strHTML, "{WORD}", eword.word);
+	replace_all(strHTML, "{WORD}", strWord);
 	replace_all(strHTML, "{TIME}", bufTime);
 	replace_all(strHTML, "{PRONUNCIATION}", "/" + eword.pronunciation + "/");
 	replace_all(strHTML, "{MEANING}", strMeaning);
@@ -135,31 +176,15 @@ string GetWordHTML(EWORD eword, string strModuleHTML, int count)
 	replace_all(strHTML, "{BAIDU_URL}", "https://fanyi.baidu.com/#en/zh/" + eword.word);
 	replace_all(strHTML, "{MORE_SENTENCES_URL}", "http://www.jukuu.com/search.php?q=" + eword.word);
 
-	count++;
-
 	return strHTML;
 }
 
-// 根据单词构建 HTML 格式的目录
-string GetDirectory(vector<string> vecStrings)
-{
-	string strDirectory = "<span class=\"blue\">[ Word List ]</span>\n" DIV_RETURN "\n";
-	for (int i = 0; i < (int)vecStrings.size(); i++)
-	{
-		char buf[12] = { 0 };
-		_itoa_s(i + 1, buf, 10);
-		strDirectory += "[" + (string)buf + "] " + vecStrings[i];
-		strDirectory += "\n" DIV_RETURN "\n";
-	}
-	strDirectory += "&nbsp;\n" DIV_RETURN "\n";
 
-	return strDirectory;
-}
-
-// 根据单词构建 Ted Englishpia，返回构建出的 HTML 内容
+// 【 主要函数 】
+// 根据单词列表构建整个 Ted Englishpia 网页文档，返回构建出的 HTML 内容
 string BuildEnglishPia(vector<string> vecStrings)
 {
-	// 单词目录
+	// 生成单词目录
 	string strDirectory;
 	if (g_bDirectoryMode)
 	{
@@ -167,29 +192,27 @@ string BuildEnglishPia(vector<string> vecStrings)
 	}
 
 	// 获取所有单词的详细信息
-	vector<EWORD> words;
-	for (int i = 0; i < (int)vecStrings.size(); i++)
-	{
-		if (vecStrings[i].size() > 0)
-		{
-			words.push_back(SearchWord(vecStrings[i]));
-		}
-	}
+	vector<EWORD> words = GetWordsInfo(vecStrings);
 
+	// 获取模版页面
 	string strModuleIndex = GetModuleIndexHTML();
 	string strModuleWord = GetModuleWordHTML();
 
+	// 所有单词对应的 HTML 格式的内容
 	string strWordsHTML;
 	for (int i = 0; i < (int)words.size(); i++)
 	{
 		strWordsHTML += GetWordHTML(words[i], strModuleWord, i);
 	}
 
+	// 当前时间
 	SYSTEMTIME sys;
 	GetLocalTime(&sys);
 	char path[128] = { 0 };
-	sprintf_s(path, 128, "%04d.%02d.%02d %02d:%02d", sys.wYear, sys.wMonth, sys.wDay, sys.wHour, sys.wMinute);
+	sprintf_s(path, 128, "%04d.%02d.%02d %02d:%02d",
+		sys.wYear, sys.wMonth, sys.wDay, sys.wHour, sys.wMinute);
 
+	// 单词数量
 	char chNum[6] = { 0 };
 	_itoa_s(words.size(), chNum, 10);
 
@@ -200,20 +223,4 @@ string BuildEnglishPia(vector<string> vecStrings)
 	replace_all(strModuleIndex, "{CONTENT}", strDirectory + strWordsHTML);
 
 	return strModuleIndex;
-}
-
-// 输出 HTML 内容为文件，返回文件路径
-string OutputHTML(string html)
-{
-	SYSTEMTIME sys;
-	GetLocalTime(&sys);
-	char path[256] = { 0 };
-	sprintf_s(path, 256, "./res/temp/TedEnglishpia_%04d-%02d-%02d-%02d-%02d-%02d.html",
-		sys.wYear, sys.wMonth, sys.wDay, sys.wHour, sys.wMinute, sys.wSecond);
-
-	ofstream out(path);
-	out.write(html.c_str(), html.size());
-	out.close();
-
-	return path;
 }

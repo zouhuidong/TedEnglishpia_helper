@@ -57,7 +57,7 @@ const int g_nDocTypesNum = 3;
 ////// 全局变量
 
 // 版本信息
-char g_strInfo[] = "Ver 0.5 | 2021.12.18";
+char g_strInfo[] = "Ver 0.5.1 | 2021.12.24";
 
 // 基准日期
 int g_month = -1;

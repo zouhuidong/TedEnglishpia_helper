@@ -91,3 +91,19 @@ vector<string> GetWordsInFile(string path)
 
 	return vecWords;
 }
+
+// 输出 HTML 内容为文件，返回文件路径
+string OutputHTML(string html)
+{
+	SYSTEMTIME sys;
+	GetLocalTime(&sys);
+	char path[256] = { 0 };
+	sprintf_s(path, 256, "./res/temp/TedEnglishpia_%04d-%02d-%02d-%02d-%02d-%02d.html",
+		sys.wYear, sys.wMonth, sys.wDay, sys.wHour, sys.wMinute, sys.wSecond);
+
+	ofstream out(path);
+	out.write(html.c_str(), html.size());
+	out.close();
+
+	return path;
+}
