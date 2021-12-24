@@ -1,9 +1,10 @@
 # TedEnglishpia_helper
-自制英语单词文档生成器，符合高中英语老师（Ted）的个人英语词典作业格式，能高效完成查词、排版工作，辅助英语学习。
 
+![License](https://img.shields.io/github/license/zouhuidong/TedEnglishpia_helper)
+![Downloads](https://img.shields.io/github/downloads/zouhuidong/TedEnglishpia_helper/total)
+![GitHub Version](https://img.shields.io/github/v/release/zouhuidong/TedEnglishpia_helper)
 
-Table of Contents
-=================
+## Table of Contents
 
 * [TedEnglishpia\_helper](#tedenglishpia_helper)
   * [项目简介](#项目简介)
@@ -16,8 +17,7 @@ Table of Contents
   * [更新日志](#更新日志)
 
 
-项目简介
----
+## 项目简介
 
 我的高中英语老师 Ted 要求我们每天查至少 5 个生词，并记录在 Englishpedia 上，也就是自己制作英语词典。
 
@@ -36,31 +36,30 @@ Ted 对 Englishpedia 有格式要求，
 
 P.S.英语单词的详细信息来自 dict.cn
 
-关于 "Englishpia" 
----
+## 关于 "Englishpia" 
+
 创建项目的时候错把 "Englishpedia" 写成了 "Englishpia"，于是一错再错……
 
 "Englishpia" 也可以当做是此工具的特色名称吧~（手动滑稽）
 
-运行效果
----
+## 运行效果
+
 ![效果图](https://github.com/zouhuidong/TedEnglishpia_helper/blob/main/screenshot/2.png)
 
-编译环境
----
+## 编译环境
+
 
 VisualStudio 2022
 
 Windows 10
 
-操作说明
----
+## 操作说明
+
 运行程序，在 cmd 中输入要查询的单词，输入每个单词之后都要回车，若输入 `/` 字符后再回车即可开始查询。
 
 更多指令请在程序中输入 `/help` 查看。
 
-使用建议（我的一些经验）
----
+## 使用建议（我的一些经验）
 
 一开始我做好这个工具的时候，我都是先用程序把要查询的单词生成出文档，然后再在电脑上对着抄在作业本上。
 由于高中住校，所以我都是周末回家才能接触电脑，平时我没有查的词全部都集中到周末用电脑来查，大概每周都要查四五十个单词，然后抄在作业本上。
@@ -78,8 +77,7 @@ Windows 10
 
 如果你想尝试借助此工具打印 pedia，请看下一节 【打印建议】。
 
-打印建议
----
+## 打印建议
 
 打印效果图：
 ![打印效果图](https://github.com/zouhuidong/TedEnglishpia_helper/blob/main/screenshot/4.jpg)
@@ -124,8 +122,7 @@ Windows 10
 复制到 Word 文档中（图）：
 ![Word 文档示意图](https://github.com/zouhuidong/TedEnglishpia_helper/blob/main/screenshot/3.png)
 
-更新日志
----
+## 更新日志
 
 **Ver 0.5** (2021.12.18)
 
