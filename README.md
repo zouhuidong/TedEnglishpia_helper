@@ -44,7 +44,9 @@ P.S.英语单词的详细信息来自 dict.cn
 
 ## 运行效果
 
-![效果图](https://github.com/zouhuidong/TedEnglishpia_helper/blob/main/screenshot/2.png)
+![效果图](https://github.com/zouhuidong/TedEnglishpia_helper/blob/main/screenshot/5.png)
+
+![效果图](https://github.com/zouhuidong/TedEnglishpia_helper/blob/main/screenshot/6.png)
 
 ## 编译环境
 
@@ -123,6 +125,16 @@ Windows 10
 ![Word 文档示意图](https://github.com/zouhuidong/TedEnglishpia_helper/blob/main/screenshot/3.png)
 
 ## 更新日志
+
+**Ver 0.5.1** (2021.12.24)
+
+上周的更新还是有一些小细节让我不太满意，所以进行了一点小修改。因为更新内容比较少，所以版本号就再加一位小数点吧。
+
+1. 在用户选择生成单词目录的前提下，在每个单词前面加上序号。
+
+2. 更新了 pedia 文档的配色样式，将传统的 “传统白绿色单行本样式” 改为了 “Notebook 现代风格”。（P.S. 用户也可以自行修改 `./res/module/css/` 下的 .css 文件来调整配色样式哦~）
+
+3. 更新了控制台窗口的首页样式，现在变得更整洁了（还有 TED logo 坐镇）。但是经测试，在 Windows 7 下会出现严重的字符错位现象，所以还是 Windows 10 yes 吧~。
 
 **Ver 0.5** (2021.12.18)
 
