@@ -1,8 +1,8 @@
 # TedEnglishpia_helper
 
-![License](https://img.shields.io/github/license/zouhuidong/TedEnglishpia_helper)
 ![Downloads](https://img.shields.io/github/downloads/zouhuidong/TedEnglishpia_helper/total)
 ![GitHub Version](https://img.shields.io/github/v/release/zouhuidong/TedEnglishpia_helper)
+[![Blog](https://img.shields.io/badge/blog-huidong.xyz-green.svg)](http://huidong.xyz)
 
 ## Table of Contents
 
