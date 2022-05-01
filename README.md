@@ -72,11 +72,11 @@ Windows 10
 
 生成的 pedia 文档：
 
-![效果图](https://github.com/zouhuidong/TedEnglishpia_helper/blob/main/screenshot/5.png)
+![效果图](./screenshot/5.png)
 
 控制台窗口：
 
-![效果图](https://github.com/zouhuidong/TedEnglishpia_helper/blob/main/screenshot/6.png)
+![效果图](./screenshot/6.png)
 
 ## 操作说明
 
@@ -104,7 +104,7 @@ Windows 10
 ## 打印教程
 
 打印效果图：
-![打印效果图](https://github.com/zouhuidong/TedEnglishpia_helper/blob/main/screenshot/4.jpg)
+![打印效果图](./screenshot/4.jpg)
 
 直接将此工具生成的单词文档打印出来，可以使你做 pedia 的效率提升到最高。但是如果要打印，还需要注意一些事项。
 
@@ -116,39 +116,31 @@ Windows 10
 
 3. 如果单词数量较多，可以将所有单词写在一个 txt 文件中，每个单词以换行隔开，然后在程序中使用 `/file` 指令，在打开的对话框中选择到 txt 文件。
    
-   若不使用 `/file` 指令，则直接在 cmd 中输入单词即可。
-
-4. 程序将自动打开生成的 TedEngpia 页面，此时不要直接在网页上选择打印。
+   若不使用 `/file` 指令，则直接在 cmd 中输入单词即可，程序将生成 pedia 的网页文档。
    
-   请首先确保你所使用的浏览器是 Chromium 内核的浏览器（如 Chrome，Edge），而不是火狐浏览器等其他内核的浏览器。
-   
-   因为如果使用类似火狐的浏览器，复制得到的网页内容格式不太对，对后续的打印会造成一些影响。
-   
-   如果你的默认浏览器不是 Chromium 内核的，可以将 TedEngpia 页面的网址复制到 Chromium 内核的浏览器中打开。
-   
-5. 确保你使用的浏览器使用的是 Chromium 内核后，使用 `Ctrl` + `A` 快捷键全选整个网页，然后复制下来，先黏贴到一个 txt 文档中，再新建一个 Word 文档，
-   把 txt 文档中的内容复制到 Word 文档中。
-   
-   先复制到 txt 再复制到 Word 文档其实是为了黏贴到 Word 文档的内容是无格式的，你也可以复制整个网页之后在 Word 中选择【只黏贴文本】。
-   
-   复制到 Word 文档之后，在 Word 界面中选择顶部的【页面布局】->【分栏】->【两栏】。
+4. 使用 `Ctrl` + `A` 快捷键全选整个网页文档，然后复制下来，黏贴到一个 Word 文档中，然后，在 Word 界面中选择顶部的【页面布局】->【分栏】->【两栏】。
    
    分两栏的目的是使纸张的利用率提高，你可以尝试一下，如果不分栏的话，50 个单词的 pedia 大约需要 9 面 A4 纸才能打印完，而分栏之后只需要 6 面纸。
    
+   P.S. 建议全选 Word 文档，选择 Calibri Light 字体。
+   
    这样 pedia 的内容就整合好到 Word 文档中了，可以开始打印了~
    
-虽然看起来文字很多，操作很麻烦，其实这都是因为说的比较详细，动手试试其实很简单的。
-
-**总结：**
-
-*把你要查询的单词输入程序，然后把生成出的文档无格式地复制到 Word 文档中分两栏打印即可。*
+虽然看起来文字很多，其实这都是因为说的比较详细，动手试试其实很简单的。
 
 复制到 Word 文档中（图）：
-![Word 文档示意图](https://github.com/zouhuidong/TedEnglishpia_helper/blob/main/screenshot/3.png)
+![Word 文档示意图](./screenshot/3.png)
 
-P.S. 建议使用 Calibri Light 字体，我预览过了 WPS 的字体列表，觉得这个是最好看的。
+## 词源追溯
+
+在程序中使用指令 `/wordsourcing` 可以开启词源追溯，即在指定的单词表中，追溯每个单词在指定的文章中的出处句子。（该功能面向高中英语教材，详见 https://github.com/zouhuidong/WordSourcing ）
 
 ## 更新日志
+
+**Ver 0.6.0**（2022.05.01）
+
+1. 更新词源追溯功能（使用指令 `/wordsourcing`）
+2. 修复 pedia 文档的一些 bug，打印时不再需要 Chromium 内核的浏览器。
 
 **Ver 0.5.1** (2021.12.24)
 
