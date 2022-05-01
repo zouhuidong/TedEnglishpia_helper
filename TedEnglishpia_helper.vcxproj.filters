@@ -18,24 +18,39 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="EqualityChecker_DiffWordType.cpp">
+      <Filter>头文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="web.h">
+    <ClInclude Include="web.hpp">
       <Filter>源文件</Filter>
     </ClInclude>
-    <ClInclude Include="string_func.h">
+    <ClInclude Include="string_func.hpp">
       <Filter>源文件</Filter>
     </ClInclude>
-    <ClInclude Include="cmd.h">
+    <ClInclude Include="cmd.hpp">
       <Filter>源文件</Filter>
     </ClInclude>
-    <ClInclude Include="file.h">
+    <ClInclude Include="file.hpp">
       <Filter>源文件</Filter>
     </ClInclude>
-    <ClInclude Include="stdafx.h">
+    <ClInclude Include="stdafx.hpp">
       <Filter>源文件</Filter>
     </ClInclude>
-    <ClInclude Include="pedia.h">
+    <ClInclude Include="pedia.hpp">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EqualityChecker_DiffWordType.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="WordSourcing.hpp">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EncodingConvert.hpp">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="translator.hpp">
       <Filter>源文件</Filter>
     </ClInclude>
   </ItemGroup>

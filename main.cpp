@@ -6,13 +6,13 @@
 //	编译环境：VisualStudio 2022
 //	项目地址：https://github.com/zouhuidong/TedEnglishpia_helper
 //	作　　者：huidong <huidong_mail@163.com>
-//	版　　本：Ver 0.5.1
-//	最后修改：2021.12.24
+//	版　　本：Ver 0.6.0
+//	最后修改：2022.05.01
 //
 
-#include "stdafx.h"
-#include "pedia.h"
-#include "cmd.h"
+#include "stdafx.hpp"
+#include "pedia.hpp"
+#include "cmd.hpp"
 
 // 打开 HTML
 void OpenHTML(string path)
@@ -23,12 +23,22 @@ void OpenHTML(string path)
 // 根据用户指令得到生成的 HTML 文档的路径
 string GetPediaHTML()
 {
-	return OutputHTML(BuildEnglishPia(GetInputWords()));
+	vector<string> vecWords;
+	vector<EWORD> vecEWords;
+	if (GetInputWords(vecWords, vecEWords) == 0)
+	{
+		return OutputHTML(BuildEnglishPia(vecWords));
+	}
+	else
+	{
+		return OutputHTML(BuildEnglishPia(vecEWords, GetStringList(vecEWords)));
+	}
 }
 
 int main()
 {
 	srand((UINT)time(0));
+	setlocale(NULL, "chs");
 
 	printf(
 		"\n"

@@ -140,15 +140,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="EqualityChecker_DiffWordType.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cmd.h" />
-    <ClInclude Include="file.h" />
-    <ClInclude Include="pedia.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="string_func.h" />
-    <ClInclude Include="web.h" />
+    <ClInclude Include="cmd.hpp" />
+    <ClInclude Include="EncodingConvert.hpp" />
+    <ClInclude Include="EqualityChecker_DiffWordType.h" />
+    <ClInclude Include="file.hpp" />
+    <ClInclude Include="pedia.hpp" />
+    <ClInclude Include="stdafx.hpp" />
+    <ClInclude Include="string_func.hpp" />
+    <ClInclude Include="translator.hpp" />
+    <ClInclude Include="web.hpp" />
+    <ClInclude Include="WordSourcing.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
