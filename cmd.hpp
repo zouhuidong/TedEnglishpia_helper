@@ -221,6 +221,7 @@ void FillWords(vector<EWORD>& vecWords)
 		}
 		else
 		{
+			// ·­ÒëÔ­ÎÄÀı¾ä
 			vecWords[i].sentences[0].zh = Translate(vecWords[i].sentences[0].en);
 		}
 	}

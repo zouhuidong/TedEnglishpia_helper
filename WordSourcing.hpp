@@ -1,14 +1,11 @@
 ///////////////////////////////////////////////////
 //
 //	WordSourcing
-//	文本词源查找工具
+//	文本词源查找模块
 // 
 //	该程序可以将指定的单词表中的每个单词，
 //	在指定的文章中进行溯源。
-// 
-//	该程序功能面向高中英语教材，项目目录下
-//	的示例文件 (./res/*) 皆摘抄自
-//	高中英语必修一教材 2019 统编版
+//	该程序功能面向高中英语教材
 // 
 //	文件格式注意事项：
 //	输入文件要求 ANSI 格式，否则中文会乱码；
@@ -57,7 +54,7 @@ bool isUselessChar(char c)
 }
 
 // 中文
-bool isChineseChar(char c)
+bool isUnicodeChar(char c)
 {
 	return c < 0;
 }
@@ -200,7 +197,7 @@ vector<EWORD> GetList(string strList)
 		}
 
 		// 突然读到中文，说明直接进入释义
-		else if (isChineseChar(strList[i]))
+		else if (isUnicodeChar(strList[i]))
 		{
 			word.meaning.push_back(Trim(GetParaphrase(&strList[i], i)));
 			end = true;
@@ -291,8 +288,9 @@ vector<Sentence> AnalyzeArticle(string strArticle)
 	Sentence sentence;
 	string strWord;
 	bool flagS = false, flagW = false;
-	const int nSymbolsNum = 4;
+	const int nSymbolsNum = 4, nIllegalSymbolsNum = 6;
 	string strSymbols[nSymbolsNum] = { "‘","’","“","”" };
+	string strIllegalSymbols[] = { "①","②","③","④","⑤","统" };
 
 	for (int i = 0; i < (int)strArticle.size(); i++)
 	{
@@ -304,6 +302,19 @@ vector<Sentence> AnalyzeArticle(string strArticle)
 			}
 			else
 			{
+				// 遇到非法符号时停止
+				if (isUnicodeChar(strArticle[i]))
+				{
+					for (int j = 0; j < nIllegalSymbolsNum; j++)
+					{
+						if (isSymbol(&strArticle[i], strIllegalSymbols[j]))
+						{
+							flagS = true;
+							goto add_end;
+						}
+					}
+				}
+
 				sentence.sentence += strArticle[i];
 			}
 		}
@@ -311,6 +322,7 @@ vector<Sentence> AnalyzeArticle(string strArticle)
 		{
 			AddWhitespace(sentence.sentence);
 		}
+	add_end:
 
 		// 歇止符判断
 		for (int j = 0; j < nSymbolsNum; j++)
@@ -322,7 +334,7 @@ vector<Sentence> AnalyzeArticle(string strArticle)
 			}
 		}
 
-		if (!flagW)
+		if (!flagW && !flagS)
 		{
 			switch (strArticle[i])
 			{

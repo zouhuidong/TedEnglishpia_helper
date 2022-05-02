@@ -6,8 +6,8 @@
 //	编译环境：VisualStudio 2022
 //	项目地址：https://github.com/zouhuidong/TedEnglishpia_helper
 //	作　　者：huidong <huidong_mail@163.com>
-//	版　　本：Ver 0.6.0
-//	最后修改：2022.05.01
+//	版　　本：Ver 0.6.1
+//	最后修改：2022.05.02
 //
 
 #include "stdafx.hpp"
