@@ -140,6 +140,24 @@ string GetWebSrcCode(LPCTSTR Url, bool isGBK = true)
 	}
 }
 
+// 移除字符串中的 HTML 标签，返回移除数量
+int RemoveHTMLLabel(std::string& str)
+{
+	for (int i = 0;; i++)
+	{
+		auto startpos = str.find("<");
+		auto endpos = str.find(">") + 1;
+
+		if (startpos == string::npos || endpos == std::string::npos)
+		{
+			return i;
+		}
+		else
+		{
+			str.erase(startpos, endpos - startpos);
+		}
+	}
+}
 
 // 在 HTML 页面中查找音标
 bool FindPronunciation(EWORD* eword, string strHTML)
@@ -192,6 +210,8 @@ bool FindMeaning(EWORD* eword, string strHTML)
 				meaning += strHTML[j];
 			}
 		}
+
+		RemoveHTMLLabel(meaning);
 		eword->meaning.push_back(meaning);
 
 		offset = end;

@@ -7,6 +7,7 @@
 #pragma once
 
 #include "stdafx.hpp"
+#include <sstream>
 
 // 获取文件内容
 string GetFile(const char* filepath)
@@ -70,25 +71,12 @@ const WCHAR* SelectFile(bool isSave = false)
 vector<string> GetWordsInFile(string path)
 {
 	vector<string> vecWords;
-	FILE* fp;
-
-	if (fopen_s(&fp, path.c_str(), "r") != 0)
+	string res = GetFile(path.c_str()), word;
+	stringstream s(res);
+	while (getline(s, word))
 	{
-		OutError("打开文件失败", false);
-		return vecWords;
+		vecWords.push_back(word);
 	}
-
-	const int size = 1024;
-	char buf[size] = { 0 };
-	while (fscanf_s(fp, "%s\n", buf, size) != -1)
-	{
-		vecWords.push_back(buf);
-		memset(buf, 0, size);
-	}
-
-	fclose(fp);
-	fp = NULL;
-
 	return vecWords;
 }
 
