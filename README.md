@@ -4,20 +4,6 @@
 ![GitHub Version](https://img.shields.io/github/v/release/zouhuidong/TedEnglishpia_helper)
 [![Blog](https://img.shields.io/badge/blog-huidong.xyz-green.svg)](http://huidong.xyz)
 
-## Table of Contents
-
-* [TedEnglishpia\_helper](#tedenglishpia_helper)
-  * [项目简介](#项目简介)
-    * [关于 "Englishpia" 项目名称](#关于-englishpia-项目名称)
-    * [编译环境](#编译环境)
-  * [凭什么要用这个工具](#凭什么要用这个工具)
-  * [运行效果](#运行效果)
-  * [操作说明](#操作说明)
-  * [实操建议](#实操建议)
-  * [打印教程](#打印教程)
-  * [词源追溯](#词源追溯)
-  * [更新日志](#更新日志)
-
 ## 项目简介
 
 Ted 每日基础作业：查至少 5 个生词，并记录在 Englishpedia（自制英语词典）上。
