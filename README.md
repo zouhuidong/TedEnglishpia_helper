@@ -136,6 +136,14 @@ Windows 10
 
 在程序中使用指令 `/wordsourcing` 可以开启词源追溯，即在指定的单词表中，追溯每个单词在指定的文章中的出处句子。（该功能面向高中英语教材，详见 https://github.com/zouhuidong/WordSourcing ）
 
+### 操作方法
+
+1. 可以在 [国家智慧教育公共服务平台](https://www.zxx.edu.cn/elecEdu) 下载所需课本的原版 pdf。
+2. 使用值得信赖的 pdf 阅读器打开下载的课本 pdf（我使用的 WPS 复制 pdf 文字会出现乱码，所以我推荐使用火狐浏览器打开 pdf）。
+3. 例如你需要制作 Unit 1 的单词文档，首先在 pdf 中，将 Unit 1 的所有文章内容复制下来（从单元引言的后一页开始，复制到下一个单元的引言之前），保存到一个 txt 中，不妨命名 article.txt。
+4. 然后在 pdf 中跳转到单词表，把 Unit 1 的单词按顺序复制下来（不需要复制 Unit 1。注意，如果复制到水印，记得删除），保存到另一个 txt 中，不妨命名 word_list.txt，最好把文件设置成 ANSI 编码。
+5. 最后打开 TedEnglishpia_helper，输入指令 `/wordsourcing`，按提示选择刚才创建的 article.txt 和 word_list.txt，程序就会生成 Unit 1 的单词文档了。
+
 ## 更新日志
 
 **Ver 0.6.2**（2022.05.04）
